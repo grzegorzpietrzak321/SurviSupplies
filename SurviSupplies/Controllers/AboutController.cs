@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SurviSupplies.Controllers
 {
-    public class ContainerController : Controller
+    public class AboutController : Controller
     {
-        public ContainerController()
+        public AboutController()
         {
         }
 
         public string Index()
         {
-            return "Wszystkie pojemniki! " + nameof(Index);
+            return "O aplikacji";
         }
     }
 }

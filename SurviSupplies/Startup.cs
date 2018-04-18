@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SurviSupplies.Services;
 
 namespace SurviSupplies
 {
@@ -17,6 +19,10 @@ namespace SurviSupplies
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //singleton for whole application
+
+            //scoped for each http request
+            services.AddScoped<IItemData, InMemoryItemData>(); 
             services.AddMvc();
         }
 
@@ -36,12 +42,18 @@ namespace SurviSupplies
             app.UseStaticFiles();
 
             //app.UseWelcomePage(new WelcomePageOptions { });
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc(configureRoutes);
 
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");
             });
+        }
+
+        private void configureRoutes(IRouteBuilder routeBuilder)
+        {
+            routeBuilder.MapRoute("Default",
+                                  "{controller=Item}/{action=Index}/{id?}");
         }
     }
 }
